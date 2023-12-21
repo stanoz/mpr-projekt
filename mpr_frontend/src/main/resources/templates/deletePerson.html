@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+    <title>deletePerson</title>
+    <script src="/script.js" async></script>
+</head>
+<body>
+<span class="header">Are you sure you want to delete this person?</span>
+
+    <div>
+        <span class="data-text" th:text="'ID: ' + *{id}"></span>
+    </div>
+    <div>
+        <span class="data-text" th:text="'Name: ' + *{person.name}"></span>
+    </div>
+    <div>
+        <span class="data-text" th:text="'Login: ' + *{person.login}"></span>
+    </div>
+    <div>
+        <span class="data-text" th:text="'Email: ' + *{person.email}"></span>
+    </div>
+    <div>
+        <span class="data-text" th:text="'Password: ' + *{person.password}"></span>
+    </div>
+    <div>
+        <span class="data-text" th:text="'Age: ' + *{person.age}"></span>
+    </div>
+<form action="#" th:object="${person}" th:action="@{'/deletePerson/' + ${id}}" method="post">
+    <button id="submit-button" type="submit" class="my-button">DELETE</button>
+</form>
+<a id="return-link" class="my-link" th:href="@{/showAll}">Return to the main page</a>
+</body>
+</html>

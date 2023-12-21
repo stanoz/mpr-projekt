@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+    <title>index</title>
+</head>
+<body>
+<span class="header">Persons:</span>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Login</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Age</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="person : ${persons}">
+        <td th:text="${person.id}"></td>
+        <td th:text="${person.name}"></td>
+        <td th:text="${person.login}"></td>
+        <td th:text="${person.email}"></td>
+        <td th:text="${person.password}"></td>
+        <td th:text="${person.age}"></td>
+        <td><a th:id="'edit-link-'+${person.id}" class="my-link" th:href="@{'/editPerson/'+${person.id}}">Edit</a></td>
+        <td><a th:id="'delete-link-'+${person.id}" class="my-link" th:href="@{'/deletePerson/'+${person.id}}">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+<a id="add-link" class="my-link" th:href="@{/addPerson}">Add person</a>
+</body>
+</html>
