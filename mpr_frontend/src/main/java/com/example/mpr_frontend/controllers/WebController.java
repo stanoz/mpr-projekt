@@ -28,21 +28,21 @@ public class WebController {
         model.addAttribute("persons", personService.getAll());
         return "index";
     }
-//    @GetMapping(value = "/deletePerson/{id}")
-//    public String getDeletePersonManager(Model model, @PathVariable("id") Long id){
-//        model.addAttribute("person", personService.getPersonById(id));
-//        return "deletePerson";
-//    }
+    @GetMapping(value = "/deletePerson/{id}")
+    public String getDeletePersonManager(Model model, @PathVariable("id") Long id){
+        model.addAttribute("person", personService.getPersonById(id));
+        return "deletePerson";
+    }
     @GetMapping(value = "/editPerson/{id}")
     public String getEditPersonManager(Model model, @PathVariable("id") Long id){
         model.addAttribute("person", personService.getPersonById(id));
         return "editPerson";
     }
-//    @RequestMapping(value = "/deletePerson/{id}", method = RequestMethod.POST)
-//    public String deletePerson(@ModelAttribute Person person, Model model, @PathVariable("id") Long id){
-//        personService.deletePersonById(person.getId());
-//        return "redirect:/showAll";
-//    }
+    @RequestMapping(value = "/deletePerson/{id}", method = RequestMethod.POST)
+    public String deletePerson(@ModelAttribute Person person, Model model, @PathVariable("id") Long id){
+        personService.deletePersonById(person.getId());
+        return "redirect:/showAll";
+    }
     @RequestMapping(value = "/editPerson/{id}", method = RequestMethod.POST)
     public String editPerson(@ModelAttribute Person person, Model model, @PathVariable("id") Long id){
         personService.editPerson(person);

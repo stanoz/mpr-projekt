@@ -24,9 +24,13 @@ public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
 //    protected ResponseEntity<String> handleInvalidArgument(RuntimeException ex, WebRequest request){
 //        return ResponseEntity.badRequest().body(ex.getMessage());
 //    }
-    @ExceptionHandler(HttpClientErrorException.class)
+    @ExceptionHandler(Exception.class)
     protected String handleExceptionFromBackend(HttpClientErrorException ex, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("Error", ex.getMessage());
-        return ("redirect:index");
+        String errorMessage = ex.getMessage()
+                .replaceAll("^\\s*\\d{3}\\s*\\w+\\s*\\w+:\\s*", "");
+        redirectAttributes.addAttribute("Error",
+                "You have provided not permitted action: \n"
+                + errorMessage);
+        return ("redirect:/showAll?error=true");
     }
 }

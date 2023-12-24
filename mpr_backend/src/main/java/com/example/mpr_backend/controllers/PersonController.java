@@ -11,7 +11,7 @@ import java.util.Optional;
 @RestController
 public class PersonController {
 
-    private PersonService service;
+    private final PersonService service;
 
     @Autowired
     public PersonController(PersonService service) {
@@ -45,6 +45,10 @@ public class PersonController {
     @GetMapping ("person/filter/{subName}")
     public List<Person> findPersonBySubName(@PathVariable("subName") String subName){
         return this.service.getAllBySubName(subName);
+    }
+    @GetMapping("/person/check/{id}")
+    public boolean checkIfPersonExists(@PathVariable("id") Long id){
+        return this.service.checkPersonExistsById(id);
     }
     @PostMapping("person/add")
     public void addPerson(@RequestBody Person person){

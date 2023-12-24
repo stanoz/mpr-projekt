@@ -6,6 +6,9 @@
     <title>index</title>
 </head>
 <body>
+<div th:if="${param.Error}">
+    <div><pre th:text="${param.Error}" class="error-message"></pre></div>
+</div>
 <span class="header">Persons:</span>
 <table>
     <thead>

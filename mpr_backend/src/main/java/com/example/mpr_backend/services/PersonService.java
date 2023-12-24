@@ -21,6 +21,9 @@ public class PersonService {
         this.repository.save(new Person("jan","jamjan","jan@gmail.com","jan123",50));
         this.repository.save(new Person("piotr","jampiotr","piotr@gmail.com","piotr123",35));
     }
+    public boolean checkPersonExistsById(Long id){
+        return this.repository.existsById(id);
+    }
     public List<Person> getPersonByName(String name){
         if (name.isBlank()){
             throw new InvalidPersonNameException("Invalid name!");

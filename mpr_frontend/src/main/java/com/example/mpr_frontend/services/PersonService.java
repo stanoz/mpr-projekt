@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class PersonService {
-    private RestClient restClient;
+    private final RestClient restClient;
     private static final String BASE_URL = "http://localhost:8080/";
     public PersonService() {
         this.restClient = RestClient.create();
@@ -29,11 +29,10 @@ public class PersonService {
 //        return repoPersonList;
 //    }
     public Person getPersonById(Long id){
-        Person person = restClient.get()
+        return restClient.get()
                 .uri(BASE_URL + "person/id/" + id)
                 .retrieve()
                 .body(Person.class);
-        return person;
     }
 //    public Person getPersonByEmail(String email){
 //        if (email.isBlank()){
@@ -126,13 +125,19 @@ public class PersonService {
 //        }
 //        this.repository.deleteByEmail(email);
 //    }
-//    public void deletePersonById(Long id){
-//        boolean personExist = this.repository.existsById(id);
-//        if (!personExist) {
-//            throw new PersonNotFoundException("Person does not exist!");
-//        }
-//        this.repository.deleteById(id);
-//    }
+    public void deletePersonById(Long id){
+        boolean personExist = Boolean.TRUE.equals(restClient
+                .get()
+                .uri(BASE_URL + "/person/check/" + id)
+                .retrieve()
+                .body(boolean.class));
+        if (!personExist) {
+            throw new PersonNotFoundException("Person does not exist!");
+        }
+        this.restClient.delete()
+                .uri(BASE_URL + "person/delete-by-id/" + id)
+                .retrieve();
+    }
     public void editPerson(Person person){
 //        boolean personExist = this.repository.existsById(person.getId());
 //        if (personExist){
