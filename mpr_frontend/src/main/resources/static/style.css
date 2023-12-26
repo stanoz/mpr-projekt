@@ -58,3 +58,15 @@ td {
     border-radius: 5px;
     display: inline-block;
 }
+.correct-input {
+    background-color: white;
+    color: black;
+}
+.incorrect-input {
+    background-color: #ffcccc;
+    color: #cc0000;
+}
+.button-disabled {
+    background-color: #8798a3;
+    border-color: #cc0000;
+}

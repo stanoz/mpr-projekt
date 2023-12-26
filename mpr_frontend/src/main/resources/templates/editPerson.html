@@ -8,7 +8,7 @@
 </head>
 <body>
 <span class="header">Edit Person</span>
-<form action="#" th:object="${person}" th:action="@{'/editPerson/' + ${id}}" method="post">
+<form action="#" th:object="${person}" th:action="@{'/editPerson/' + ${id}}" method="post" id="form">
     <div>
         <span class="data-text" th:text="'ID:' + *{id}"></span>
     </div>
@@ -42,7 +42,7 @@
             <input id="age" th:field="*{age}" type="number" name="age" required>
         </label>
     </div>
-    <button id="submit-button" class="my-button" type="submit">Edit</button>
+    <button id="submit-button" class="my-button button-disabled" type="submit" disabled="disabled">Edit</button>
 </form>
 <a id="return-link" class="my-link" th:href="@{/showAll}">Return to the main page</a>
 </body>
