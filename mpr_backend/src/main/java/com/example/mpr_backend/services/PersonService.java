@@ -9,18 +9,53 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.springframework.util.ClassUtils.isPresent;
 
 @Service
 public class PersonService {
     PersonRepository repository;
+    private static final String EMAIL_PATTERN = "^[\\w\\d._%+-]+@[\\w\\d._%+-]+\\.[\\w\\d._%+-]+$";
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
     @Autowired
     public PersonService(PersonRepository repository){
         this.repository = repository;
-        this.repository.save(new Person("jan","jamjan","jan@gmail.com","jan123",50));
-        this.repository.save(new Person("piotr","jampiotr","piotr@gmail.com","piotr123",35));
+        this.repository.save(new Person("Jan","jamjan","jan@gmail.com","jan123",50));
+        this.repository.save(new Person("Piotr","jampiotr","piotr@gmail.com","piotr123",35));
     }
+
+    private void correctPersonData(Person person) {
+        person.setName(person.getName().trim());
+        person.setEmail(person.getEmail().trim());
+        person.setLogin(person.getLogin().trim());
+        person.setPassword(person.getPassword().trim());
+
+        person.setName(person.getName().substring(0,1).toUpperCase() + person.getName().substring(1));
+
+        this.repository.save(person);
+    }
+
+    private void validatePerson(Person person){
+        if (person.getLogin().isBlank()){
+            throw new InvalidPersonLoginException("Invalid login!");
+        }
+
+        Matcher matcher = pattern.matcher(person.getEmail());
+        if (matcher.matches()){
+            throw new InvalidPersonEmailException("Invalid email!");
+        }
+
+        if (person.getName().isBlank()){
+            throw new InvalidPersonNameException("Invalid name!");
+        }
+
+        if (person.getPassword().isBlank()){
+            throw new InvalidPersonPasswordException("Invalid password!");
+        }
+    }
+
     public boolean checkPersonExistsById(Long id){
         return this.repository.existsById(id);
     }
@@ -106,21 +141,11 @@ public class PersonService {
             if (person.getAge() <= 0){
                 throw new InvalidPersonAgeException("Invalid age!");
             }
-            if (person.getName().isBlank()){
-                throw new InvalidPersonNameException("Invalid name!");
-            }
-            if (person.getEmail().isBlank()){
-                throw new InvalidPersonEmailException("Invalid email!");
-            }
-            if (person.getLogin().isBlank()){
-                throw new InvalidPersonLoginException("Invalid login!");
-            }
-            if (person.getPassword().isBlank()){
-                throw new InvalidPersonPasswordException("Invalid password!");
-            }
-            this.repository.save(person);
+           validatePerson(person);
+            correctPersonData(person);
         }
     }
+
     public void deletePersonByEmail(String email){
         if (email.isBlank()){
             throw new InvalidPersonEmailException("Invalid email!");
@@ -149,19 +174,8 @@ public class PersonService {
             if (person.getAge() <= 0 || person.getAge() < repoPerson.getAge()){
                 throw new InvalidPersonAgeException("Invalid age!");
             }
-            if (person.getLogin().isBlank()){
-                throw new InvalidPersonLoginException("Invalid login!");
-            }
-            if (person.getEmail().isBlank()){
-                throw new InvalidPersonEmailException("Invalid email!");
-            }
-            if (person.getName().isBlank()){
-                throw new InvalidPersonNameException("Invalid name!");
-            }
-            if (person.getPassword().isBlank()){
-                throw new InvalidPersonPasswordException("Invalid password!");
-            }
-            this.repository.save(person);
+            validatePerson(person);
+            correctPersonData(person);
         }else {
             throw new PersonNotFoundException("Person does not exist!");
         }

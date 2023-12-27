@@ -5,7 +5,6 @@ window.onload = function () {
     var loginInput = document.getElementById('login');
     var emailInput = document.getElementById('email');
     var passwordInput = document.getElementById('password');
-    var form = document.getElementById('form');
     var submitButton = document.getElementById('submit-button');
 
     let checkFormArray = [true, true, true, true, true];
@@ -25,11 +24,11 @@ window.onload = function () {
         }
     }
 
-    function clearDefaultValue(inputType) {
-        if (inputType.value !== '') {
-            inputType.value = '';
-        }
-    }
+    // function clearDefaultValue(inputType) {
+    //     if (inputType.value !== '') {
+    //         inputType.value = '';
+    //     }
+    // }
 
     function isNumber(number){
         return !isNaN(number);
@@ -63,21 +62,21 @@ window.onload = function () {
         submitButton.classList.remove("button-disabled");
     }
 
-    ageInput.addEventListener('focus', function (){
-        clearDefaultValue(ageInput);
-    });
-    nameInput.addEventListener('focus', function () {
-        clearDefaultValue(nameInput)
-    });
-    loginInput.addEventListener('focus', function () {
-        clearDefaultValue(loginInput)
-    });
-    emailInput.addEventListener('focus', function () {
-        clearDefaultValue(emailInput)
-    });
-    passwordInput.addEventListener('focus', function () {
-        clearDefaultValue(passwordInput)
-    });
+    // ageInput.addEventListener('focus', function (){
+    //     clearDefaultValue(ageInput);
+    // });
+    // nameInput.addEventListener('focus', function () {
+    //     clearDefaultValue(nameInput)
+    // });
+    // loginInput.addEventListener('focus', function () {
+    //     clearDefaultValue(loginInput)
+    // });
+    // emailInput.addEventListener('focus', function () {
+    //     clearDefaultValue(emailInput)
+    // });
+    // passwordInput.addEventListener('focus', function () {
+    //     clearDefaultValue(passwordInput)
+    // });
     /*
     * Checking_form
     * */
