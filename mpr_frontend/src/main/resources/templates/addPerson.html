@@ -8,6 +8,9 @@
 </head>
 <body>
 <span class="header">Add new Person</span>
+<div>
+    <p class="important-note">All spaces from the beginning and end of each input will be removed!</p>
+</div>
 <form action="#" th:object="${person}" th:action="@{/addPerson}" method="post">
     <div>
         <label>Name</label>
@@ -39,7 +42,7 @@
             <input id="age" th:field="*{age}" type="number" name="age" min="0" required>
         </label>
     </div>
-    <button id="submit-button" type="submit" class="my-button button-disabled" disabled="disabled">Save</button>
+    <button id="submit-button" type="submit" class="my-button button-disabled">Save</button>
 </form>
 <a id="return-link" class="my-link" th:href="@{/showAll}">Return to the main page</a>
 </body>

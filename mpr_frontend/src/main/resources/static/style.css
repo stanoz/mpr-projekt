@@ -1,3 +1,7 @@
+body {
+    background-color: #DEDEDE;
+}
+
 table {
     border: 2px solid;
     border-collapse: collapse;
@@ -70,3 +74,23 @@ td {
     background-color: #8798a3;
     border-color: #cc0000;
 }
+
+.important-note {
+    background-color: #ffffcc;
+
+    border: 2px solid #ffcc00;
+
+    padding: 10px;
+    margin-bottom: 15px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: #333333;
+
+    display: inline-block;
+}
+
