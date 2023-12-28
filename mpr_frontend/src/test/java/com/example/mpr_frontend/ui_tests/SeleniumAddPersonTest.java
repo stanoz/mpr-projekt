@@ -58,6 +58,68 @@ public class SeleniumAddPersonTest {
         assertEquals(expectedTitle, driver.getTitle());
     }
     @Test
+    public void nameNotFilledClickSubmitButtonShouldStayAtTheSamePage(){
+        AddPersonTestPage addPersonTestPage = new AddPersonTestPage(driver);
+        addPersonTestPage.open();
+        addPersonTestPage.fillInLogin("jamhenryk");
+        addPersonTestPage.fillInEmail("henryk@gmail.com");
+        addPersonTestPage.fillInPassword("henryk123");
+        addPersonTestPage.fillInAge("30");
+        addPersonTestPage.clickSubmitButton();
+        String expectedTitle = "addPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void loginNotFilledClickSubmitButtonShouldStayAtTheSamePage(){
+        AddPersonTestPage addPersonTestPage = new AddPersonTestPage(driver);
+        addPersonTestPage.open();
+        addPersonTestPage.fillInName("Henryk");
+        addPersonTestPage.fillInEmail("henryk@gmail.com");
+        addPersonTestPage.fillInPassword("henryk123");
+        addPersonTestPage.fillInAge("30");
+        addPersonTestPage.clickSubmitButton();
+        String expectedTitle = "addPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void emailNotFilledClickSubmitButtonShouldStayAtTheSamePage(){
+        AddPersonTestPage addPersonTestPage = new AddPersonTestPage(driver);
+        addPersonTestPage.open();
+        addPersonTestPage.fillInName("Henryk");
+        addPersonTestPage.fillInLogin("jamhenryk");
+        addPersonTestPage.fillInPassword("henryk123");
+        addPersonTestPage.fillInAge("30");
+        addPersonTestPage.clickSubmitButton();
+        String expectedTitle = "addPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void emailFilledWronglyClickSubmitButtonShouldStayAtTheSamePage(){
+        AddPersonTestPage addPersonTestPage = new AddPersonTestPage(driver);
+        addPersonTestPage.open();
+        addPersonTestPage.fillInName("Henryk");
+        addPersonTestPage.fillInLogin("jamhenryk");
+        addPersonTestPage.fillInEmail("notemail");
+        addPersonTestPage.fillInPassword("henryk123");
+        addPersonTestPage.fillInAge("30");
+        addPersonTestPage.clickSubmitButton();
+        String expectedTitle = "addPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void ageNotFilledClickSubmitButtonShouldStayAtTheSamePage(){
+        AddPersonTestPage addPersonTestPage = new AddPersonTestPage(driver);
+        addPersonTestPage.open();
+        addPersonTestPage.fillInName("Henryk");
+        addPersonTestPage.fillInLogin("jamhenryk");
+        addPersonTestPage.fillInEmail("henryk@gmail.com");
+        addPersonTestPage.fillInPassword("henryk123");
+        addPersonTestPage.fillInAge(" ");
+        addPersonTestPage.clickSubmitButton();
+        String expectedTitle = "addPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
     public void clickReturnLinkShouldNavigateToTheMainPage(){
         AddPersonTestPage addPersonTestPage = new AddPersonTestPage(driver);
         addPersonTestPage.open();

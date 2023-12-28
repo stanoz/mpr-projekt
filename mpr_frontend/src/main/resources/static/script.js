@@ -8,6 +8,7 @@ window.onload = function () {
     var submitButton = document.getElementById('submit-button');
 
     submitButton.disabled = true;
+    disableSubmitButton();
 
     let checkFormArray = [true, true, true, true, true];
     /*
@@ -26,18 +27,12 @@ window.onload = function () {
         }
     }
 
-    // function clearDefaultValue(inputType) {
-    //     if (inputType.value !== '') {
-    //         inputType.value = '';
-    //     }
-    // }
-
     function isNumber(number){
         return !isNaN(number);
     }
 
     function isEmail(text){
-        return /^\w+@\w+/.test(text);
+        return /^.+@.+\..+$/.test(text);
     }
 
     function isEmpty(text){
@@ -64,21 +59,6 @@ window.onload = function () {
         submitButton.classList.remove("button-disabled");
     }
 
-    // ageInput.addEventListener('focus', function (){
-    //     clearDefaultValue(ageInput);
-    // });
-    // nameInput.addEventListener('focus', function () {
-    //     clearDefaultValue(nameInput)
-    // });
-    // loginInput.addEventListener('focus', function () {
-    //     clearDefaultValue(loginInput)
-    // });
-    // emailInput.addEventListener('focus', function () {
-    //     clearDefaultValue(emailInput)
-    // });
-    // passwordInput.addEventListener('focus', function () {
-    //     clearDefaultValue(passwordInput)
-    // });
     /*
     * Checking_form
     * */
@@ -109,12 +89,12 @@ window.onload = function () {
 
     emailInput.addEventListener('keyup',function (){
         if (isEmail(this.value)){
-            changeInputClassWhenIncorrect(this);
-            checkFormArray[2] = false;
-            checkForm();
-        }else {
             changeInputClassWhenCorrect(this);
             checkFormArray[2] = true;
+            checkForm();
+        }else {
+            changeInputClassWhenIncorrect(this);
+            checkFormArray[2] = false;
             checkForm();
         }
     });

@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class AddPersonTestPage {
-    public static final String URL = "http://localhost:8080/addPerson";
+    public static final String URL = "http://localhost:8081/addPerson";
     WebDriver webDriver;
 
     public AddPersonTestPage(WebDriver webDriver) {
@@ -44,6 +44,7 @@ public class AddPersonTestPage {
         passwordInput.sendKeys(password);
     }
     public void fillInAge(String age){
+        ageInput.clear();
         ageInput.sendKeys(age);
     }
     public void clickSubmitButton(){

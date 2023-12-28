@@ -1,6 +1,5 @@
 package com.example.mpr_frontend.exception_handlers;
 
-import com.example.mpr_frontend.exceptions.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

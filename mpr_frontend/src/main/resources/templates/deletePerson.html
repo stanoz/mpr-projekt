@@ -28,7 +28,7 @@
         <span class="data-text" th:text="'Age: ' + *{person.age}"></span>
     </div>
 <form action="#" th:object="${person}" th:action="@{'/deletePerson/' + ${id}}" method="post">
-    <button id="submit-button" type="submit" class="my-button">DELETE</button>
+    <button id="delete-button" type="submit" class="my-button">DELETE</button>
 </form>
 <a id="return-link" class="my-link" th:href="@{/showAll}">Return to the main page</a>
 </body>

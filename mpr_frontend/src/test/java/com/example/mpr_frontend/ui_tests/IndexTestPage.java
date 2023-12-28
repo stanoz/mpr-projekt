@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class IndexTestPage {
 
-    public static final String URL = "http://localhost:8080/showAll";
+    public static final String URL = "http://localhost:8081/showAll";
     WebDriver webDriver;
 
     public IndexTestPage(WebDriver webDriver) {

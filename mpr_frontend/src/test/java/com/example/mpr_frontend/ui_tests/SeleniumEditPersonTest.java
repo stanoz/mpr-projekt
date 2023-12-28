@@ -48,12 +48,97 @@ public class SeleniumEditPersonTest {
         EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
         editPersonTestPage.open();
         editPersonTestPage.fillInName("Bob");
+        editPersonTestPage.fillInLogin("jambob");
         editPersonTestPage.fillInEmail("bob@gmail.com");
         editPersonTestPage.fillInPassword("bob123");
-        editPersonTestPage.fillInLogin("jambob");
         editPersonTestPage.fillInAge("55");
         editPersonTestPage.clickSubmitButton();
         String expectedTitle = "index";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void whenNoFieldsChangedShouldStayAtTheSamePage(){
+        EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
+        editPersonTestPage.open();
+        String expectedTitle = "editPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void whenNameFilledWronglyShouldStayAtTheSamePage(){
+        EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
+        editPersonTestPage.open();
+        editPersonTestPage.fillInName(" ");
+        editPersonTestPage.fillInLogin("jambob");
+        editPersonTestPage.fillInEmail("bob@gmail.com");
+        editPersonTestPage.fillInPassword("bob123");
+        editPersonTestPage.fillInAge("55");
+        editPersonTestPage.clickSubmitButton();
+        String expectedTitle = "editPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void whenLoginFilledWronglyShouldStayAtTheSamePage(){
+        EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
+        editPersonTestPage.open();
+        editPersonTestPage.fillInName("Bob");
+        editPersonTestPage.fillInLogin(" ");
+        editPersonTestPage.fillInEmail("bob@gmail.com");
+        editPersonTestPage.fillInPassword("bob123");
+        editPersonTestPage.fillInAge("55");
+        editPersonTestPage.clickSubmitButton();
+        String expectedTitle = "editPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void whenEmailFilledWithSpaceShouldStayAtTheSamePage(){
+        EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
+        editPersonTestPage.open();
+        editPersonTestPage.fillInName("Bob");
+        editPersonTestPage.fillInLogin("jambob");
+        editPersonTestPage.fillInEmail(" ");
+        editPersonTestPage.fillInPassword("bob123");
+        editPersonTestPage.fillInAge("55");
+        editPersonTestPage.clickSubmitButton();
+        String expectedTitle = "editPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void whenEmailFilledWronglyShouldStayAtTheSamePage(){
+        EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
+        editPersonTestPage.open();
+        editPersonTestPage.fillInName("Bob");
+        editPersonTestPage.fillInLogin("jambob");
+        editPersonTestPage.fillInEmail("notemail");
+        editPersonTestPage.fillInPassword("bob123");
+        editPersonTestPage.fillInAge("55");
+        editPersonTestPage.clickSubmitButton();
+        String expectedTitle = "editPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void whenPasswordFilledWronglyShouldStayAtTheSamePage(){
+        EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
+        editPersonTestPage.open();
+        editPersonTestPage.fillInName("Bob");
+        editPersonTestPage.fillInLogin("jambob");
+        editPersonTestPage.fillInEmail("bob@gmail.com");
+        editPersonTestPage.fillInPassword(" ");
+        editPersonTestPage.fillInAge("55");
+        editPersonTestPage.clickSubmitButton();
+        String expectedTitle = "editPerson";
+        assertEquals(expectedTitle, driver.getTitle());
+    }
+    @Test
+    public void whenAgeFilledWronglyShouldStayAtTheSamePage(){
+        EditPersonTestPage editPersonTestPage = new EditPersonTestPage(driver);
+        editPersonTestPage.open();
+        editPersonTestPage.fillInName("Bob");
+        editPersonTestPage.fillInLogin("jambob");
+        editPersonTestPage.fillInEmail("bob@gmail.com");
+        editPersonTestPage.fillInPassword("bob123");
+        editPersonTestPage.fillInAge(" ");
+        editPersonTestPage.clickSubmitButton();
+        String expectedTitle = "editPerson";
         assertEquals(expectedTitle, driver.getTitle());
     }
 }

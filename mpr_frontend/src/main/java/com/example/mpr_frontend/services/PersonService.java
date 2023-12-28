@@ -1,7 +1,6 @@
 package com.example.mpr_frontend.services;
 
 import com.example.mpr_frontend.dtos.Person;
-import com.example.mpr_frontend.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -63,15 +62,14 @@ public class PersonService {
 //        return repoPersonsList;
 //    }
     public List<Person> getAll(){
-        List<Person> repoPersonList = restClient
+//        if (repoPersonList.isEmpty()){
+//            throw new PersonNotFoundException("Person not found!");
+//        }
+        return restClient
                 .get()
                 .uri(BASE_URL + "person/getAll")
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
-        if (repoPersonList.isEmpty()){
-            throw new PersonNotFoundException("Person not found!");
-        }
-        return repoPersonList;
     }
 //    public List<Person> getAllBySubName(String subName){
 //        if (subName.isBlank()){
@@ -126,14 +124,14 @@ public class PersonService {
 //        this.repository.deleteByEmail(email);
 //    }
     public void deletePersonById(Long id){
-        boolean personExist = Boolean.TRUE.equals(restClient
-                .get()
-                .uri(BASE_URL + "/person/check/" + id)
-                .retrieve()
-                .body(boolean.class));
-        if (!personExist) {
-            throw new PersonNotFoundException("Person does not exist!");
-        }
+//        boolean personExist = Boolean.TRUE.equals(restClient
+//                .get()
+//                .uri(BASE_URL + "/person/check/" + id)
+//                .retrieve()
+//                .body(boolean.class));
+//        if (!personExist) {
+//            throw new PersonNotFoundException("Person does not exist!");
+//        }
         this.restClient.delete()
                 .uri(BASE_URL + "person/delete-by-id/" + id)
                 .retrieve();
