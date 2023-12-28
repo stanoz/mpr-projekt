@@ -33,17 +33,17 @@ public class PersonService {
         person.setPassword(person.getPassword().trim());
 
         person.setName(person.getName().substring(0,1).toUpperCase() + person.getName().substring(1));
-
-        this.repository.save(person);
     }
 
     private void validatePerson(Person person){
         if (person.getLogin().isBlank()){
             throw new InvalidPersonLoginException("Invalid login!");
         }
-
+        if (person.getEmail().isBlank()){
+            throw new InvalidPersonEmailException("Invalid email!");
+        }
         Matcher matcher = pattern.matcher(person.getEmail());
-        if (matcher.matches()){
+        if (!matcher.matches()){
             throw new InvalidPersonEmailException("Invalid email!");
         }
 
@@ -141,8 +141,9 @@ public class PersonService {
             if (person.getAge() <= 0){
                 throw new InvalidPersonAgeException("Invalid age!");
             }
-           validatePerson(person);
+            validatePerson(person);
             correctPersonData(person);
+            this.repository.save(person);
         }
     }
 
@@ -176,6 +177,7 @@ public class PersonService {
             }
             validatePerson(person);
             correctPersonData(person);
+            this.repository.save(person);
         }else {
             throw new PersonNotFoundException("Person does not exist!");
         }

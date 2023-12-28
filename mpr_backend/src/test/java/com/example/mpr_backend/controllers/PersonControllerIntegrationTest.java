@@ -1,9 +1,9 @@
 package com.example.mpr_backend.controllers;
 
-import com.example.mpr.dtos.Person;
-import com.example.mpr.exception_handlers.PersonExceptionHandler;
-import com.example.mpr.exceptions.*;
-import com.example.mpr.services.PersonService;
+import com.example.mpr_backend.dtos.Person;
+import com.example.mpr_backend.exception_handlers.PersonExceptionHandler;
+import com.example.mpr_backend.exceptions.*;
+import com.example.mpr_backend.services.PersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -699,6 +699,26 @@ public class PersonControllerIntegrationTest {
                         "\"password\" : \"adam123\"," +
                         "\"age\" : 40}")
                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void checkIfPersonExistsShouldReturnTrue() throws Exception {
+        //given
+        when(personService.checkPersonExistsById(1L)).thenReturn(true);
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get(("/person/check/1")))
+                .andExpect(jsonPath("$").value(true))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void checkIfPersonExistsShouldReturnFalse() throws Exception {
+        //given
+        when(personService.checkPersonExistsById(1L)).thenReturn(false);
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get(("/person/check/1")))
+                .andExpect(jsonPath("$").value(false))
                 .andExpect(status().isOk());
     }
 }

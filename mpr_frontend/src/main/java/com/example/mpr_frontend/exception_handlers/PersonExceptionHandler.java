@@ -11,19 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
-//    @ExceptionHandler(PersonNotFoundException.class)
-//    protected ResponseEntity<String> handleNotFound(RuntimeException ex, WebRequest request){
-//        return ResponseEntity.notFound().build();
-//    }
-//    @ExceptionHandler(PersonAlreadyExistException.class)
-//    protected ResponseEntity<String> handleAlreadyExist(RuntimeException ex, WebRequest request){
-//        return ResponseEntity.badRequest().body(ex.getMessage());
-//    }
-//    @ExceptionHandler({InvalidPersonAgeException.class, InvalidPersonEmailException.class,
-//            InvalidPersonLoginException.class, InvalidPersonNameException.class, InvalidPersonPasswordException.class})
-//    protected ResponseEntity<String> handleInvalidArgument(RuntimeException ex, WebRequest request){
-//        return ResponseEntity.badRequest().body(ex.getMessage());
-//    }
     @ExceptionHandler(Exception.class)
     protected String handleExceptionFromBackend(HttpClientErrorException ex, RedirectAttributes redirectAttributes) {
         String errorMessage = ex.getMessage()

@@ -1,8 +1,8 @@
 package com.example.mpr_backend.services;
 
-import com.example.mpr.dtos.Person;
-import com.example.mpr.dtos.PersonRepository;
-import com.example.mpr.exceptions.*;
+import com.example.mpr_backend.dtos.Person;
+import com.example.mpr_backend.dtos.PersonRepository;
+import com.example.mpr_backend.exceptions.*;
 import org.assertj.core.api.BDDAssumptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,10 +75,11 @@ class PersonServiceTest {
     void getPersonByEmailShouldReturnPersonWithGivenEmail() {
         //given
         Person person = new Person("Adam","jamadam","adam@gmail.com","adam123",45);
+        when(repository.existsByEmail(person.getEmail())).thenReturn(true);
         when(repository.findByEmail(person.getEmail())).thenReturn(person);
 
         //when
-        Person result = repository.findByEmail(person.getEmail());
+        Person result = personService.getPersonByEmail(person.getEmail());
 
         //then
         assertEquals(person,result);
@@ -102,10 +103,11 @@ class PersonServiceTest {
     void getPersonByLoginShouldReturnPersonWithGivenLogin() {
         //given
         Person person = new Person("Adam","jamadam","adam@gmail.com","adam123",45);
+        when(repository.existsByLogin(person.getLogin())).thenReturn(true);
         when(repository.findByLogin(person.getLogin())).thenReturn(person);
 
         //when
-        Person result = repository.findByLogin(person.getLogin());
+        Person result = personService.getPersonByLogin(person.getLogin());
 
         //then
         assertEquals(person,result);
@@ -183,7 +185,7 @@ class PersonServiceTest {
     void addPersonShouldThrowPersonAlreadyExistExceptionEmail(){
         //given
         Person person = new Person("Adam","jamadam2","adam@gmail.com","adam123",45);
-        when(repository.save(person)).thenThrow(new PersonAlreadyExistException("This email is taken!"));
+        when(repository.existsByEmail(person.getEmail())).thenReturn(true);
 
         //when
         //then
@@ -193,7 +195,7 @@ class PersonServiceTest {
     void addPersonShouldThrowPersonAlreadyExistExceptionLogin(){
         //given
         Person person = new Person("Adam","jamadam","adam2@gmail.com","adam123",45);
-        when(repository.save(person)).thenThrow(new PersonAlreadyExistException("This login is taken!"));
+        when(repository.existsByLogin(person.getLogin())).thenReturn(true);
 
         //when
         //then
@@ -238,6 +240,14 @@ class PersonServiceTest {
         //when
         //then
         assertThrows(InvalidPersonPasswordException.class, () -> personService.addPerson(person));
+    }
+    @Test
+    void addPersonShouldThrowInvalidEmailExceptionDueToMatcher(){
+        //given
+        Person person = new Person("Adam","jamadam","adam@gmail"," ",40);
+        //when
+        //then
+        assertThrows(InvalidPersonEmailException.class, () -> personService.addPerson(person));
     }
     @Test
     void getAllShouldReturnAllPersons(){
@@ -357,7 +367,7 @@ class PersonServiceTest {
         Person person = new Person("Adam","jamadam","adam@gmail.com","adam123",45);
         Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",40);
         when(repository.existsById(person.getId())).thenReturn(true);
-        when(repository.findByEmail(person.getEmail())).thenReturn(repoPerson);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
         //when
         personService.editPerson(person);
         //given
@@ -378,7 +388,7 @@ class PersonServiceTest {
         Person person = new Person("Adam","jamadam","adam@gmail.com","adam123",45);
         Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",45);
         when(repository.existsById(person.getId())).thenReturn(true);
-        when(repository.findByEmail(person.getEmail())).thenReturn(repoPerson);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
         //when
         //then
         assertThrows(PersonAlreadyExistException.class, () -> personService.editPerson(person));
@@ -389,7 +399,7 @@ class PersonServiceTest {
         Person person = new Person("Adam","jamadam","adam@gmail.com","adam123",45);
         Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",50);
         when(repository.existsById(person.getId())).thenReturn(true);
-        when(repository.findByEmail(person.getEmail())).thenReturn(repoPerson);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
         //when
         //then
         assertThrows(InvalidPersonAgeException.class, () -> personService.editPerson(person));
@@ -400,7 +410,7 @@ class PersonServiceTest {
         Person person = new Person("Adam","","adam@gmail.com","adam123",45);
         Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",40);
         when(repository.existsById(person.getId())).thenReturn(true);
-        when(repository.findByEmail(person.getEmail())).thenReturn(repoPerson);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
         //when
         //then
         assertThrows(InvalidPersonLoginException.class, () -> personService.editPerson(person));
@@ -411,7 +421,18 @@ class PersonServiceTest {
         Person person = new Person("Adam","jamadam","","adam123",45);
         Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",40);
         when(repository.existsById(person.getId())).thenReturn(true);
-        when(repository.findByEmail(person.getEmail())).thenReturn(repoPerson);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
+        //when
+        //then
+        assertThrows(InvalidPersonEmailException.class, () -> personService.editPerson(person));
+    }
+    @Test
+    void editPersonShouldThrowInvalidPersonEmailExceptionDuwToMatcher(){
+        //given
+        Person person = new Person("Adam","jamadam","adam@gmail","adam123",45);
+        Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",40);
+        when(repository.existsById(person.getId())).thenReturn(true);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
         //when
         //then
         assertThrows(InvalidPersonEmailException.class, () -> personService.editPerson(person));
@@ -422,7 +443,7 @@ class PersonServiceTest {
         Person person = new Person("","jamadam","adam@gmail.com","adam123",45);
         Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",40);
         when(repository.existsById(person.getId())).thenReturn(true);
-        when(repository.findByEmail(person.getEmail())).thenReturn(repoPerson);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
         //when
         //then
         assertThrows(InvalidPersonNameException.class, () -> personService.editPerson(person));
@@ -433,9 +454,26 @@ class PersonServiceTest {
         Person person = new Person("Adam","jamadam","adam@gmail.com","",45);
         Person repoPerson = new Person("Adam","jamadam","adam@gmail.com","adam123",40);
         when(repository.existsById(person.getId())).thenReturn(true);
-        when(repository.findByEmail(person.getEmail())).thenReturn(repoPerson);
+        when(repository.findById(person.getId())).thenReturn(Optional.of(repoPerson));
         //when
         //then
         assertThrows(InvalidPersonPasswordException.class, () -> personService.editPerson(person));
+    }
+    @Test
+    void checkPersonExistsByIdShouldReturnTrueWhenPersonExists(){
+        //given
+        Person person = new Person("Adam","jamadam","adam@gmail.com","adam123",40);
+        person.setId(1L);
+        when(repository.existsById(person.getId())).thenReturn(true);
+        //when
+        //then
+        assertTrue(personService.checkPersonExistsById(1L));
+    }
+    @Test
+    void checkPersonExistsByIdShouldReturnFalseWhenPersonDoesNotExist(){
+        //given
+        //when
+        //then
+        assertFalse(personService.checkPersonExistsById(1L));
     }
 }

@@ -93,21 +93,21 @@ public class PersonService {
 //        return repoPersonList;
 //    }
     public void addPerson(Person person){
-            if (person.getAge() <= 0){
-                throw new InvalidPersonAgeException("Invalid age!");
-            }
-            if (person.getName().isBlank()){
-                throw new InvalidPersonNameException("Invalid name!");
-            }
-            if (person.getEmail().isBlank()){
-                throw new InvalidPersonEmailException("Invalid email!");
-            }
-            if (person.getLogin().isBlank()){
-                throw new InvalidPersonLoginException("Invalid login!");
-            }
-            if (person.getPassword().isBlank()){
-                throw new InvalidPersonPasswordException("Invalid password!");
-            }
+//            if (person.getAge() <= 0){
+//                throw new InvalidPersonAgeException("Invalid age!");
+//            }
+//            if (person.getName().isBlank()){
+//                throw new InvalidPersonNameException("Invalid name!");
+//            }
+//            if (person.getEmail().isBlank()){
+//                throw new InvalidPersonEmailException("Invalid email!");
+//            }
+//            if (person.getLogin().isBlank()){
+//                throw new InvalidPersonLoginException("Invalid login!");
+//            }
+//            if (person.getPassword().isBlank()){
+//                throw new InvalidPersonPasswordException("Invalid password!");
+//            }
             this.restClient.post()
                     .uri(BASE_URL + "person/add")
                     .contentType(MediaType.APPLICATION_JSON)
