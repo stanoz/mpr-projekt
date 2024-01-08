@@ -7,7 +7,6 @@ window.onload = function () {
     var passwordInput = document.getElementById('password');
     var submitButton = document.getElementById('submit-button');
 
-    submitButton.disabled = true;
     disableSubmitButton();
 
     let checkFormArray = [true, true, true, true, true];

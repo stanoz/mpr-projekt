@@ -1,6 +1,7 @@
 package com.example.mpr_frontend.services;
 
 import com.example.mpr_frontend.dtos.Person;
+import com.example.mpr_frontend.exception_handlers.PersonExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,9 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +28,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -31,6 +36,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 class PersonServiceTest {
 
     private static final String BASE_URL = "http://localhost:8080/";
+
+//    private MockMvc mockMvc;
 
     @InjectMocks
     private PersonService personService;
@@ -45,6 +52,7 @@ class PersonServiceTest {
     @BeforeEach
     public void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
+//        this.mockMvc = MockMvcBuilders.standaloneSetup(new PersonExceptionHandler(), personService).build();
     }
     @AfterEach
     public void tearDown() throws Exception {
@@ -57,34 +65,13 @@ class PersonServiceTest {
         //given
         Person expectedPerson = new Person("Jan","jamjan","jan@gmail.com","jan123",50);
         expectedPerson.setId(1L);
-//        when(restTemplate.getForObject(anyString(), eq(Person.class))).thenReturn(expectedPerson);
-//        when(restTemplate.getForObject(BASE_URL + "person/id/" + expectedPerson.getId(),Person.class)).thenReturn(expectedPerson);
 
         //when
         Person actualPerson = personService.getPersonById(expectedPerson.getId());
 
         //then
-//        verify(restTemplate, times(1)).getForObject(anyString(), eq(Person.class));
         assertEquals(expectedPerson, actualPerson);
     }
-//    nie_dziala
-//    @Test
-//    void testGetPersonById1() {
-//        //given
-//        Person expectedPerson = new Person("Gort","jamgort","gort@gmail.com","gort123",20);
-//        expectedPerson.setId(10L);
-//        when(restClient.get()
-//                .uri(BASE_URL + "person/id/" + any())
-//                .retrieve()
-//                .body(Person.class)).thenReturn(expectedPerson);
-//
-//        //when
-//        Person actualPerson = personService.getPersonById(10L);
-//
-//        //then
-////        verify(restClient, times(1)).get().uri(anyString()).retrieve().bodyToMono(Person.class);
-//        assertEquals(expectedPerson, actualPerson);
-//    }
     @Order(2)
     @Test
     void getAllShouldReturnAllPersons(){
@@ -106,21 +93,24 @@ class PersonServiceTest {
     }
     @Order(3)
     @Test
-    void addPersonShouldPerformAddNewPerson(){
+    void addPersonShouldPerformAddNewPerson() throws Exception {
         //given
         Person person = new Person("Gort","jamgort","gort@gmail.com","gort123",20);
-//        when(restClient.post()
-//                .uri(BASE_URL + "person/add")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(captor.capture())
-//                .retrieve()
-//                .toBodilessEntity());
+
         //when
-        personService.addPerson(person);
+        //personService.addPerson(person);
         //given
-//        assertEquals(person,captor.getValue());
+//        mockMvc.perform(MockMvcRequestBuilders.post(BASE_URL + "person/add")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"name\" : \"Gort\"," +
+//                        "\"login\" : \"jamgort\"," +
+//                        "\"email\" : \"gort@gmail.com\"," +
+//                        "\"password\" : \"gort123\"," +
+//                        "\"age\" : 45}")
+//                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
     }
-    @Order(3)
+    @Order(4)
     @Test
     void editPersonShouldPerformEditPerson(){
         //given
@@ -130,7 +120,7 @@ class PersonServiceTest {
         personService.editPerson(person);
         //given
     }
-    @Order(4)
+    @Order(5)
     @Test
     void deletePersonShouldPerformDeletePerson(){
         //given

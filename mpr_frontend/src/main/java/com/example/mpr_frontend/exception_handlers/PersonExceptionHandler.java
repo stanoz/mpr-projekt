@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
-    private static Logger logger = LoggerFactory.getLogger(PersonExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(PersonExceptionHandler.class);
     @ExceptionHandler(Exception.class)
     protected String handleExceptionFromBackend(HttpClientErrorException ex, RedirectAttributes redirectAttributes) {
         logger.info(ex.getMessage());
