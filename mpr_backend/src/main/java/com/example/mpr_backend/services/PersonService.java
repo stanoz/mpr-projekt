@@ -128,7 +128,7 @@ public class PersonService {
         }
         return repoPersonList;
     }
-    public void addPerson(Person person){
+    public Person addPerson(Person person){
         boolean givenEmailExists = this.repository.existsByEmail(person.getEmail());
         boolean givenLoginExists = this.repository.existsByLogin(person.getLogin());
         if (givenEmailExists || givenLoginExists) {
@@ -143,7 +143,7 @@ public class PersonService {
             }
             validatePerson(person);
             correctPersonData(person);
-            this.repository.save(person);
+            return this.repository.save(person);
         }
     }
 
@@ -164,7 +164,7 @@ public class PersonService {
         }
         this.repository.deleteById(id);
     }
-    public void editPerson(Person person){
+    public Person editPerson(Person person){
         boolean personExist = this.repository.existsById(person.getId());
         if (personExist){
             Person repoPerson = repository.findById(person.getId())
@@ -177,7 +177,7 @@ public class PersonService {
             }
             validatePerson(person);
             correctPersonData(person);
-            this.repository.save(person);
+            return this.repository.save(person);
         }else {
             throw new PersonNotFoundException("Person does not exist!");
         }
