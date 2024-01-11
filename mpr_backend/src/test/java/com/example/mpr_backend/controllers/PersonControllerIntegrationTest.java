@@ -479,7 +479,7 @@ public class PersonControllerIntegrationTest {
                         Objects.requireNonNull(e.getResolvedException()).getMessage()));
     }
     @Test
-    void addPersonShouldReturnCheck200() throws Exception {
+    void addPersonShouldReturnCheck202() throws Exception {
         //given
         //when
         //then
@@ -491,7 +491,7 @@ public class PersonControllerIntegrationTest {
                         "\"password\" : \"adam123\"," +
                         "\"age\" : 40}")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isAccepted());
     }
     @Test
     void deletePersonByEmailShouldReturnCheck404WhenPersonNotFound() throws Exception{
@@ -538,12 +538,12 @@ public class PersonControllerIntegrationTest {
                         Objects.requireNonNull(e.getResolvedException()).getMessage()));
     }
     @Test
-    void deletePersonByIdShouldReturnCheck200() throws Exception{
+    void deletePersonByIdShouldReturnCheck204() throws Exception{
         //given
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.delete("/person/delete-by-id/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
     @Test
     void editPersonShouldReturnCheck404WhenPersonNotFound() throws Exception{
