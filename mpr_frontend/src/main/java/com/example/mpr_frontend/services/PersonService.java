@@ -12,10 +12,11 @@ import java.util.List;
 
 @Service
 public class PersonService {
+    @Autowired
     private final RestClient restClient;
     private static final String BASE_URL = "http://localhost:8080/";
-    public PersonService() {
-        this.restClient = RestClient.create();
+    public PersonService(RestClient restClient) {
+        this.restClient = restClient;
     }
 //    public List<Person> getPersonByName(String name){
 //        if (name.isBlank()){
