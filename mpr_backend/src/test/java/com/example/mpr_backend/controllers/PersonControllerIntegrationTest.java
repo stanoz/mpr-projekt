@@ -523,7 +523,7 @@ public class PersonControllerIntegrationTest {
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.delete("/person/delete-by-email/email@exist.com"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
     @Test
     void deletePersonByIdShouldReturnCheck404WhenPersonNotFound() throws Exception{

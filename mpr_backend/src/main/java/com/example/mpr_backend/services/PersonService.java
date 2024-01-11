@@ -5,6 +5,7 @@ import com.example.mpr_backend.dtos.PersonRepository;
 import com.example.mpr_backend.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,7 @@ public class PersonService {
         }
     }
 
+    @Transactional
     public void deletePersonByEmail(String email){
         if (email.isBlank()){
             throw new InvalidPersonEmailException("Invalid email!");
