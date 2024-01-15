@@ -4,10 +4,10 @@ import com.example.mpr_frontend.dtos.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -91,7 +91,7 @@ public class PersonService {
 //        }
 //        return repoPersonList;
 //    }
-    public void addPerson(Person person){
+    public ResponseEntity<Void> addPerson(Person person){
 //            if (person.getAge() <= 0){
 //                throw new InvalidPersonAgeException("Invalid age!");
 //            }
@@ -107,12 +107,13 @@ public class PersonService {
 //            if (person.getPassword().isBlank()){
 //                throw new InvalidPersonPasswordException("Invalid password!");
 //            }
-            this.restClient.post()
+        var response = this.restClient.post()
                     .uri(BASE_URL + "person/add")
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(person)
                     .retrieve()
                     .toBodilessEntity();
+        return ResponseEntity.accepted().body(response.getBody());
     }
 //    public void deletePersonByEmail(String email){
 //        if (email.isBlank()){

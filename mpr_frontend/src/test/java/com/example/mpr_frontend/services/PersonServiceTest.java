@@ -9,12 +9,17 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.boot.test.web.client.MockServerRestClientCustomizer;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.client.match.MockRestRequestMatchers;
+import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,110 +27,101 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(MockitoExtension.class)
+@RestClientTest
 class PersonServiceTest {
 
-    private static final String BASE_URL = "http://localhost:8080/";
-
-//    private MockMvc mockMvc;
-
-    @InjectMocks
-    private PersonService personService;
-
-    @Mock
-    private RestClient restClient = RestClient.create();
-
-    private AutoCloseable openMocks;
-    @Captor
-    private ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-
+    MockServerRestClientCustomizer customizer = new MockServerRestClientCustomizer();
+    RestClient.Builder builder = RestClient.builder();
+    PersonService personService;
+    private final static String BASE_URL = "http://localhost:8080/";
     @BeforeEach
-    public void setUp() {
-        openMocks = MockitoAnnotations.openMocks(this);
-//        this.mockMvc = MockMvcBuilders.standaloneSetup(new PersonExceptionHandler(), personService).build();
+    public void setUp(){
+        customizer.customize(builder);
+        personService = new PersonService(builder.build());
     }
-    @AfterEach
-    public void tearDown() throws Exception {
-        openMocks.close();
-    }
-
-    @Order(1)
     @Test
-    void getPersonByIdShouldReturnPersonWithGivenId() {
-        //given
-        Person expectedPerson = new Person("Jan","jamjan","jan@gmail.com","jan123",50);
-        expectedPerson.setId(1L);
-
-        //when
-        Person actualPerson = personService.getPersonById(expectedPerson.getId());
-
-        //then
-        assertEquals(expectedPerson, actualPerson);
-    }
-    @Order(2)
-    @Test
-    void getAllShouldReturnAllPersons(){
-        //given
-        Person person1 = new Person("Jan","jamjan","jan@gmail.com","jan123",50);
-        person1.setId(1L);
-        Person person2 = new Person("Piotr","jampiotr","piotr@gmail.com","piotr123",35);
-        person2.setId(2L);
-
-        //when
-        List<Person> personList = personService.getAll();
-
-        //then
+    public void getPersonByIdTest() {
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/id/1"))
+                .andRespond(MockRestResponseCreators.withSuccess(
+                        "{\"id\":1," +
+                                "\"name\":\"Jan\"," +
+                                "\"age\":20," +
+                                "\"email\":\"jan2@gmail.com\"," +
+                                "\"login\":\"jan2\"," +
+                                "\"password\":\"jan2\"}",
+                        MediaType.APPLICATION_JSON));
+        Person person = personService.getPersonById(1L);
         assertAll(
-                () -> assertThat(hasSize(2).matches(personList)),
-                () -> assertEquals(person1, personList.get(0)),
-                () -> assertEquals(person2, personList.get(1))
+                () -> assertEquals(1L, person.getId()),
+                () -> assertEquals("Jan", person.getName()),
+                () -> assertEquals(20, person.getAge()),
+                () -> assertEquals("jan2@gmail.com", person.getEmail()),
+                () -> assertEquals("jan2", person.getLogin()),
+                () -> assertEquals("jan2", person.getPassword())
         );
     }
-    @Order(3)
     @Test
-    void addPersonShouldPerformAddNewPerson() throws Exception {
-        //given
-        Person person = new Person("Gort","jamgort","gort@gmail.com","gort123",20);
-
-        //when
-        //personService.addPerson(person);
-        //given
-//        mockMvc.perform(MockMvcRequestBuilders.post(BASE_URL + "person/add")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"name\" : \"Gort\"," +
-//                        "\"login\" : \"jamgort\"," +
-//                        "\"email\" : \"gort@gmail.com\"," +
-//                        "\"password\" : \"gort123\"," +
-//                        "\"age\" : 45}")
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
+    public void getPersonByIdTestShouldThrowException() {
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/id/1"))
+                .andRespond(MockRestResponseCreators.withStatus(org.springframework.http.HttpStatus.NOT_FOUND));
+        Assertions.assertThrows(HttpClientErrorException.class, () -> personService.getPersonById(1L));
     }
-    @Order(4)
     @Test
-    void editPersonShouldPerformEditPerson(){
-        //given
-        Person person = new Person("Gort","jamgort2","gort2@gmail.com","gort123",60);
+    public void getAllByIdTest(){
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/getAll"))
+                .andRespond(MockRestResponseCreators.withSuccess(
+                        "["+
+                                "{\"id\":1," +
+                                "\"name\":\"Jan\"," +
+                                "\"login\":\"jamjan\"," +
+                                "\"email\":\"jan@gmail.com\"," +
+                                "\"password\":\"jan123\"," +
+                                "\"age\" : 20}" +
+                                "," +
+                                "{\"id\":2," +
+                                "\"name\":\"Piotr\"," +
+                                "\"login\":\"jampiotr\"," +
+                                "\"email\":\"piotr@gmail.com\"," +
+                                "\"password\":\"piotr123\"," +
+                                "\"age\" : 21}" +
+                                "]",
+                        MediaType.APPLICATION_JSON));
+        List<Person> personList = personService.getAll();
+        assertAll(
+                () -> assertEquals(1L, personList.get(0).getId()),
+                () -> assertEquals("Jan", personList.get(0).getName()),
+                () -> assertEquals(20, personList.get(0).getAge()),
+                () -> assertEquals("jan@gmail.com",personList.get(0).getEmail()),
+                () -> assertEquals("jamjan", personList.get(0).getLogin()),
+                () -> assertEquals("jan123", personList.get(0).getPassword()),
+                () -> assertEquals(2L, personList.get(1).getId()),
+                () -> assertEquals("Piotr", personList.get(1).getName()),
+                () -> assertEquals(21, personList.get(1).getAge()),
+                () -> assertEquals("piotr@gmail.com",personList.get(1).getEmail()),
+                () -> assertEquals("jampiotr", personList.get(1).getLogin()),
+                () -> assertEquals("piotr123", personList.get(1).getPassword())
+        );
+    }
+    @Test
+    public void getAllByIdTestShouldThrowException(){
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/getAll"))
+                .andRespond(MockRestResponseCreators.withStatus(org.springframework.http.HttpStatus.NOT_FOUND));
+        Assertions.assertThrows(HttpClientErrorException.class, () -> personService.getAll());
+    }
+    @Test
+    public void addPersonTest() {
+        Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 20);
         person.setId(1L);
-        //when
-        personService.editPerson(person);
-        //given
-    }
-    @Order(5)
-    @Test
-    void deletePersonShouldPerformDeletePerson(){
-        //given
-        //when
-        personService.deletePersonById(1L);
-        //then
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/add"))
+                .andRespond(withSuccess());
+        ResponseEntity<Void> responseEntity = personService.addPerson(person);
+        assertEquals(202, responseEntity.getStatusCodeValue());
     }
 }
