@@ -121,7 +121,21 @@ class PersonServiceTest {
         person.setId(1L);
         customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/add"))
                 .andRespond(withSuccess());
-        ResponseEntity<Void> responseEntity = personService.addPerson(person);
-        assertEquals(202, responseEntity.getStatusCodeValue());
+        personService.addPerson(person);
+    }
+    @Test
+    public void editPersonTest(){
+        Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 20);
+        person.setId(1L);
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/edit"))
+                .andRespond(withSuccess());
+        personService.editPerson(person);
+    }
+    @Test
+    public void deletePersonTest(){
+        Long id = 1L;
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/delete-by-id/" + id))
+                .andRespond(withSuccess());
+        personService.deletePersonById(id);
     }
 }

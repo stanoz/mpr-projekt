@@ -6,28 +6,19 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
-public class WebControllerIntegrationTest {
+public class WebControllerTest {
 
     @Mock
     private PersonService personService;
@@ -37,11 +28,6 @@ public class WebControllerIntegrationTest {
 
     @InjectMocks
     private WebController webController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Order(1)
     @Test
@@ -68,6 +54,8 @@ public class WebControllerIntegrationTest {
     void addPersonShouldPerformAddPerson(){
         Person personToAdd = new Person("Adam", "jamadam", "adam@gmail.com", "adam123", 40);
         webController.addPerson(personToAdd, model);
+
+        verify(personService).addPerson(personToAdd);
 
     }
     @Order(3)
