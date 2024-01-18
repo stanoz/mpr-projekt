@@ -41,7 +41,8 @@ public class PersonService {
     public void deletePersonById(Long id){
         this.restClient.delete()
                 .uri(BASE_URL + "person/delete-by-id/" + id)
-                .retrieve();
+                .retrieve()
+                .toBodilessEntity();
     }
     public void editPerson(Person person){
         this.restClient.put()

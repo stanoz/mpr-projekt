@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.test.web.client.MockServerRestClientCustomizer;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -70,7 +71,7 @@ class PersonServiceTest {
     @Test
     public void getPersonByIdTestShouldThrowException() {
         customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/id/1"))
-                .andRespond(MockRestResponseCreators.withStatus(org.springframework.http.HttpStatus.NOT_FOUND));
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
         Assertions.assertThrows(HttpClientErrorException.class, () -> personService.getPersonById(1L));
     }
     @Test
@@ -112,7 +113,7 @@ class PersonServiceTest {
     @Test
     public void getAllByIdTestShouldThrowException(){
         customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/getAll"))
-                .andRespond(MockRestResponseCreators.withStatus(org.springframework.http.HttpStatus.NOT_FOUND));
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
         Assertions.assertThrows(HttpClientErrorException.class, () -> personService.getAll());
     }
     @Test
@@ -124,6 +125,22 @@ class PersonServiceTest {
         personService.addPerson(person);
     }
     @Test
+    public void addPersonTestShouldThrowExceptionNotFound() {
+        Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 20);
+        person.setId(1L);
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/add"))
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
+        Assertions.assertThrows(HttpClientErrorException.class, () -> personService.addPerson(person));
+    }
+    @Test
+    public void addPersonTestShouldThrowExceptionBadRequest() {
+        Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 20);
+        person.setId(1L);
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/add"))
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.BAD_REQUEST));
+        Assertions.assertThrows(HttpClientErrorException.class, () -> personService.addPerson(person));
+    }
+    @Test
     public void editPersonTest(){
         Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 20);
         person.setId(1L);
@@ -132,10 +149,33 @@ class PersonServiceTest {
         personService.editPerson(person);
     }
     @Test
+    public void editPersonTestShouldThrowExceptionNotFound() {
+        Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 20);
+        person.setId(1L);
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/edit"))
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
+        Assertions.assertThrows(HttpClientErrorException.class, () -> personService.editPerson(person));
+    }
+    @Test
+    public void editPersonTestShouldThrowExceptionBadRequest() {
+        Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 20);
+        person.setId(1L);
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/edit"))
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.BAD_REQUEST));
+        Assertions.assertThrows(HttpClientErrorException.class, () -> personService.editPerson(person));
+    }
+    @Test
     public void deletePersonTest(){
         Long id = 1L;
         customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/delete-by-id/" + id))
                 .andRespond(withSuccess());
         personService.deletePersonById(id);
+    }
+    @Test
+    public void deletePersonTestShouldThrowExceptionNotFound(){
+        Long id = 1L;
+        customizer.getServer().expect(MockRestRequestMatchers.requestTo(BASE_URL + "person/delete-by-id/" + id))
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
+        Assertions.assertThrows(HttpClientErrorException.class, () -> personService.deletePersonById(id));
     }
 }
