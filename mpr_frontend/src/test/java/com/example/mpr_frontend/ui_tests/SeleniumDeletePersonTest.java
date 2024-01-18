@@ -36,14 +36,4 @@ public class SeleniumDeletePersonTest {
         String expectedTitle = "index";
         assertEquals(expectedTitle, driver.getTitle());
     }
-    public void addPersonToDelete(){
-        AddPersonTestPage addPersonTestPage = new AddPersonTestPage(driver);
-        addPersonTestPage.open();
-        addPersonTestPage.fillInName("Test");
-        addPersonTestPage.fillInLogin("jamtest");
-        addPersonTestPage.fillInEmail("test@gmail.com");
-        addPersonTestPage.fillInPassword("test123");
-        addPersonTestPage.fillInAge("30");
-        addPersonTestPage.clickSubmitButton();
-    }
 }

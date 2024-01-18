@@ -1,8 +1,5 @@
 package com.example.mpr_frontend.dtos;
 
-
-import org.springframework.boot.autoconfigure.web.WebProperties;
-
 import java.util.Objects;
 
 

@@ -5,12 +5,7 @@ import com.example.mpr_frontend.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-
-import javax.naming.Binding;
-import java.util.Objects;
 
 @Controller
 public class WebController {
