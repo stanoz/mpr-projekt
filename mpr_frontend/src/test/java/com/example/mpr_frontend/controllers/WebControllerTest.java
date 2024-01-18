@@ -23,8 +23,6 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 public class WebControllerTest {
 
@@ -37,7 +35,6 @@ public class WebControllerTest {
     @InjectMocks
     private WebController webController;
 
-    @Order(1)
     @Test
     void getIndexViewShouldReturnIndex() {
         //given
@@ -71,7 +68,7 @@ public class WebControllerTest {
         verify(model).addAttribute("person",person);
     }
     @Test
-    public void getEditPersonManager(){
+    public void getEditPersonManagerTest(){
         //given
         Person person = new Person("Adam", "jamadam", "adam@gmail.com", "adam123", 40);
         person.setId(1L);
@@ -85,27 +82,57 @@ public class WebControllerTest {
         assertEquals("editPerson",viewName);
         verify(model).addAttribute("person",person);
     }
-    @Order(2)
-    @Test
-    void addPersonShouldPerformAddPerson(){
-        Person personToAdd = new Person("Adam", "jamadam", "adam@gmail.com", "adam123", 40);
-        webController.addPerson(personToAdd, model);
-
-        verify(personService).addPerson(personToAdd);
-
-    }
-    @Order(3)
-    @Test
-    void editPersonShouldPerformEditPerson(){
-        Person personToEdit = new Person("Adam", "jamadam", "adam@gmail.com", "adam1234", 40);
-        webController.editPerson(personToEdit, model, 3L);
-        verify(personService).editPerson(personToEdit);
-    }
-    @Order(4)
     @Test
     void deletePersonShouldPerformDeletePerson(){
+        //given
         Person personToDelete = new Person("Adam", "jamadam", "adam@gmail.com", "adam1234", 40);
-        webController.deletePerson(personToDelete, model, 3L);
+        //when
+        String viewName = webController.deletePerson(personToDelete, model, 3L);
+       //then
         verify(personService).deletePersonById(personToDelete.getId());
+        assertEquals("redirect:/showAll", viewName);
+    }
+    @Test
+    void editPersonShouldPerformEditPerson(){
+        //given
+        Person personToEdit = new Person("Adam", "jamadam", "adam@gmail.com", "adam1234", 40);
+
+        //when
+        String viewName = webController.editPerson(personToEdit, model, 3L);
+
+        //then
+        verify(personService).editPerson(personToEdit);
+        assertEquals("redirect:/showAll", viewName);
+    }
+    @Test
+    void getAddPersonManagerTest(){
+        //given
+        //when
+        String viewName = webController.getAddPersonManager(model);
+
+        //then
+        assertEquals("addPerson", viewName);
+        verify(model).addAttribute("person", new Person());
+    }
+    @Test
+    void addPersonShouldPerformAddPerson(){
+        //given
+        Person personToAdd = new Person("Adam", "jamadam", "adam@gmail.com", "adam123", 40);
+
+        //when
+        String viewName = webController.addPerson(personToAdd, model);
+
+        //then
+        verify(personService).addPerson(personToAdd);
+        assertEquals("redirect:/showAll", viewName);
+    }
+    @Test
+    void getWelcomeViewTest(){
+        //given
+        //when
+        String viewName = webController.getWelcomeView();
+
+        //then
+        assertEquals("welcome", viewName);
     }
 }
