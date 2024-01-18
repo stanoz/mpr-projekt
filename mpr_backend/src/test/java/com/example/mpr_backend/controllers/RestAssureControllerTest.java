@@ -1,16 +1,21 @@
 package com.example.mpr_backend.controllers;
 
 import com.example.mpr_backend.dtos.Person;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RestAssureControllerTest {
 
     private static final String URI = "http://localhost:8080/";
+    @Order(1)
     @Test
     public void getPersonByIdShouldReturnCode200(){
         when()
@@ -27,6 +32,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(2)
     @Test
     public void testGetPerson2(){
        Person person = when()
@@ -38,6 +44,7 @@ public class RestAssureControllerTest {
        assertEquals(1,person.getId());
        assertEquals("Jan",person.getName());
     }
+    @Order(3)
     @Test
     public void getPersonByIdShouldReturnCode404(){
         when()
@@ -47,6 +54,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(4)
     @Test
     public void getPersonByNameShouldReturnCode200(){
         when().
@@ -63,6 +71,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(5)
     @Test
     public void getPersonByNameShouldReturnCode404(){
         when().
@@ -72,16 +81,8 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
-//    @Test
-//    public void getPersonByNameShouldReturnCode400(){
-//        when().
-//                get(URI + "person/name/ ")
-//                .then()
-//                .statusCode(400)
-//                .log()
-//                .body();
-//    }
     @Test
+    @Order(6)
     public void getPersonByLoginShouldReturnCode200(){
         when()
                 .get(URI + "person/login/jamjan")
@@ -97,6 +98,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(7)
     @Test
     public void getPersonByLoginShouldReturnCode404(){
         when()
@@ -106,16 +108,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
-//    @Test
-//    public void getPersonByLoginShouldReturnCode400(){
-//        String blankEmail = " ";
-//        when()
-//                .get(URI + "person/login/" + blankEmail)
-//                .then()
-//                .statusCode(400)
-//                .log()
-//                .body();
-//    }
+    @Order(8)
     @Test
     public void getPersonByEmailShouldReturnCode200() {
         when()
@@ -132,6 +125,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(9)
     @Test
     public void getPersonByEmailShouldReturnCode404(){
         when()
@@ -141,15 +135,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
-//    @Test
-//    public void getPersonByEmailShouldReturnCode400(){
-//        when()
-//                .get(URI + "person/email/ ")
-//                .then()
-//                .statusCode(400)
-//                .log()
-//                .body();
-//    }
+    @Order(10)
     @Test
     public void getPersonByAgeShouldReturnCode200(){
         when()
@@ -166,6 +152,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(11)
     @Test
     public void getPersonByAgeShouldReturnCode400(){
         when()
@@ -176,6 +163,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(12)
     @Test
     public void getPersonByAgeShouldReturnCode404(){
         when()
@@ -186,6 +174,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(13)
     @Test
     public void getAllShouldReturnCode200(){
         when()
@@ -208,6 +197,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(14)
     @Test
     public void getAllBySubNameShouldReturnCode200(){
         when()
@@ -224,6 +214,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(15)
     @Test
     public void getAllBySubNameShouldReturnCode404(){
         when()
@@ -233,6 +224,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(16)
     @Test
     public void checkIfPersonExistsShouldReturnCode200WhenPersonFound(){
         when()
@@ -244,6 +236,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(17)
     @Test
     public void checkIfPersonExistsShouldReturnCode200WhenPersonNotFound(){
         when()
@@ -255,6 +248,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(18)
     @Test
     public void addPersonShouldReturnCode202(){
         Person person = new Person("Gort","jamgort","gort@gmail.com","gort123",10);
@@ -275,6 +269,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(19)
     @Test
     public void addPersonShouldReturnCode400WhenLoginIsTaken(){
         Person person = new Person("Gort","jamgort","gort@gmail.com","gort123",10);
@@ -289,6 +284,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(20)
     @Test
     public void addPersonShouldReturnCode400WhenEmailIsTaken() {
         Person person = new Person("Gort", "jamgort2", "gort@gmail.com", "gort123", 10);
@@ -303,6 +299,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(21)
     @Test
     public void addPersonShouldReturnCode400WhenInvalidAge() {
         Person person = new Person("Gort","jamgort2","gort2@gmail.com","gort123",0);
@@ -317,6 +314,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(22)
     @Test
     public void addPersonShouldReturnCode400WhenInvalidLogin() {
         Person person = new Person("Gort"," ","gort2@gmail.com","gort123",10);
@@ -331,6 +329,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(23)
     @Test
     public void addPersonShouldReturnCode400WhenInvalidEmail() {
         Person person = new Person("Gort","jamgort2"," ","gort123",10);
@@ -345,6 +344,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(24)
     @Test
     public void addPersonShouldReturnCode400WhenInvalidEmailNotMatchesRegex() {
         Person person = new Person("Gort","jamgort2","invalidEmail","gort123",10);
@@ -359,6 +359,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(25)
     @Test
     public void addPersonShouldReturnCode400WhenInvalidName() {
         Person person = new Person(" ", "jamgort2", "gort2@gmail.com", "gort123", 10);
@@ -373,6 +374,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(26)
     @Test
     public void addPersonShouldReturnCode400WhenInvalidPassword(){
         Person person = new Person("Gort","jamgort2","gort2@gmail.com"," ",10);
@@ -387,16 +389,18 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
-//    @Test
-//    public void deletePersonByEmailShouldReturnCode400WhenInvalidEmail(){
-//        when()
-//                .delete(URI + "person/delete-by-email/ ")
-//                .then()
-//                .assertThat()
-//                .statusCode(400)
-//                .log()
-//                .body();
-//    }
+    @Order(35)
+    @Test
+    public void deletePersonByEmailShouldReturnCode400WhenInvalidEmail(){
+        when()
+                .delete(URI + "person/delete-by-email/wrongEmail")
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .log()
+                .body();
+    }
+    @Order(36)
     @Test
     public void deletePersonByEmailShouldReturnCode404WhenPersonNotFound(){
         when()
@@ -407,6 +411,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(38)
     @Test
     public void deletePersonByEmailShouldReturnCode204WhenDeletedPerson(){
         when()
@@ -417,6 +422,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(37)
     @Test
     public void deletePersonByIdShouldReturnCode404WhenPersonNotFound(){
         when()
@@ -427,6 +433,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(39)
     @Test
     public void deletePersonByIdShouldReturnCode204WhenDeletedPerson(){
         when()
@@ -437,6 +444,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(27)
     @Test
     public void editPersonShouldReturnCode404WhenPersonNotFound(){
         Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 50);
@@ -451,6 +459,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(28)
     @Test
     public void editPersonShouldReturnCode400WhenPersonSendWithNotChangedData(){
         Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 50);
@@ -466,6 +475,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(29)
     @Test
     public void editPersonShouldReturnCode400WhenInvalidLogin() {
         Person person = new Person("Jan", " ", "jan@gmail.com", "jan123", 50);
@@ -481,6 +491,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(30)
     @Test
     public void editPersonShouldReturnCode400WhenInvalidEmail() {
         Person person = new Person("Jan", "jamjan", " ", "jan123", 50);
@@ -496,6 +507,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(31)
     @Test
     public void editPersonShouldReturnCode400WhenInvalidEmailNotMatchesRegex() {
         Person person = new Person("Jan", "jamjan", "invalidEmail ", "jan123", 50);
@@ -511,6 +523,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(32)
     @Test
     public void editPersonShouldReturnCode400WhenInvalidName() {
         Person person = new Person(" ", "jamjan", "jan@gmail.com", "jan123", 50);
@@ -526,6 +539,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(32)
     @Test
     public void editPersonShouldReturnCode400WhenInvalidPassword() {
         Person person = new Person("Jan", "jamjan", "jan@gmail.com", " ", 50);
@@ -541,6 +555,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(33)
     @Test
     public void editPersonShouldReturnCode400WhenAgeIs0() {
         Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 0);
@@ -556,6 +571,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(34)
     @Test
     public void editPersonShouldReturnCode400WhenAgeIsLowerThanPrevious() {
         Person person = new Person("Jan", "jamjan", "jan@gmail.com", "jan123", 40);
@@ -570,6 +586,7 @@ public class RestAssureControllerTest {
                 .log()
                 .body();
     }
+    @Order(34)
     @Test
     public void editPersonShouldReturnCode200WhenEditedPerson(){
         Person person = new Person("Jan", "jamjanek", "jan@gmail.com", "jan123", 50);

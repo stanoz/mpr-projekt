@@ -9,11 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.springframework.util.ClassUtils.isPresent;
 
 @Service
 public class PersonService {
@@ -71,9 +69,8 @@ public class PersonService {
         return repoPersonList;
     }
     public Person getPersonById(Long id){
-        Person person = repository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException("Person with given id not found!"));
-        return person;
     }
     public Person getPersonByEmail(String email){
         if (email.isBlank()){
@@ -150,7 +147,8 @@ public class PersonService {
 
     @Transactional
     public void deletePersonByEmail(String email){
-        if (email.isBlank()){
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()){
             throw new InvalidPersonEmailException("Invalid email!");
         }
         boolean personExist = this.repository.existsByEmail(email);

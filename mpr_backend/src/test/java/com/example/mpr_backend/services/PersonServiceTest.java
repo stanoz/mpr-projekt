@@ -3,32 +3,22 @@ package com.example.mpr_backend.services;
 import com.example.mpr_backend.dtos.Person;
 import com.example.mpr_backend.dtos.PersonRepository;
 import com.example.mpr_backend.exceptions.*;
-import org.assertj.core.api.BDDAssumptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
-import static org.assertj.core.api.BDDAssumptions.*;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.boot.autoconfigure.AutoConfigurationPackages.has;
 
 
 @ExtendWith(MockitoExtension.class)

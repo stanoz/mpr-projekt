@@ -1,8 +1,8 @@
 //package com.example.mpr_backend.controllers;
 //
-//import com.example.mpr.dtos.Person;
-//import com.example.mpr.dtos.PersonRepository;
-//import com.example.mpr.services.PersonService;
+//import com.example.mpr_backend.dtos.Person;
+//import com.example.mpr_backend.dtos.PersonRepository;
+//import com.example.mpr_backend.services.PersonService;
 //import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
